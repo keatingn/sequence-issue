@@ -22,7 +22,8 @@ public class PlanConstraintProvider implements ConstraintProvider {
     @Override
     public Constraint[] defineConstraints(ConstraintFactory constraintFactory) {
         return new Constraint[]{
-                emptyJob(constraintFactory),
+                outOfStock(constraintFactory),
+//                emptyJob(constraintFactory),
                 service(constraintFactory)
         };
     }
