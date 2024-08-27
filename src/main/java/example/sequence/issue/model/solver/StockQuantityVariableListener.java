@@ -50,8 +50,8 @@ public class StockQuantityVariableListener implements VariableListener<Plan, Job
             ScoreDirector<Plan> scoreDirector, Product product, Period period) {
         return scoreDirector.getWorkingSolution().getStocks().stream()
                 .filter(stock -> stock.getProduct().equals(product))
-                .filter(stock -> stock.getPeriod().getIndex() >= period.getIndex())
-                .sorted(Comparator.comparing(stock -> stock.getPeriod().getIndex()))
+                .filter(stock -> stock.getPeriod().index() >= period.index())
+                .sorted(Comparator.comparing(stock -> stock.getPeriod().index()))
                 .toList();
     }
 

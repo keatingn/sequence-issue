@@ -17,18 +17,11 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 
 @PlanningSolution
-@Data
-@Builder
-@Slf4j
-@AllArgsConstructor
-@NoArgsConstructor
 public class Plan {
-
     private List<Period> periods;
     private List<Product> products;
 
     @ValueRangeProvider(id = "quantities")
-    @Builder.Default
     private CountableValueRange<Long> jobSizes = ValueRangeFactory.createLongValueRange(3, 35);
 
     @PlanningEntityCollectionProperty
@@ -39,4 +32,60 @@ public class Plan {
     @PlanningScore
     private HardSoftLongScore score;
 
+    public List<Period> getPeriods() {
+        return periods;
+    }
+
+    public void setPeriods(List<Period> periods) {
+        this.periods = periods;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public CountableValueRange<Long> getJobSizes() {
+        return jobSizes;
+    }
+
+    public void setJobSizes(CountableValueRange<Long> jobSizes) {
+        this.jobSizes = jobSizes;
+    }
+
+    public List<Job> getJobs() {
+        return jobs;
+    }
+
+    public void setJobs(List<Job> jobs) {
+        this.jobs = jobs;
+    }
+
+    public List<Stock> getStocks() {
+        return stocks;
+    }
+
+    public void setStocks(List<Stock> stocks) {
+        this.stocks = stocks;
+    }
+
+    public HardSoftLongScore getScore() {
+        return score;
+    }
+
+    public void setScore(HardSoftLongScore score) {
+        this.score = score;
+    }
+
+    @Override
+    public String toString() {
+        return "Plan{" +
+                "products=" + products +
+                ", stocks=" + stocks +
+                ", score=" + score +
+                '}';
+    }
 }

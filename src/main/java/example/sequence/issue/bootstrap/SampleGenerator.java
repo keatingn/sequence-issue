@@ -2,6 +2,7 @@ package example.sequence.issue.bootstrap;
 
 import ai.timefold.solver.core.api.solver.SolverJob;
 import ai.timefold.solver.core.api.solver.SolverManager;
+
 import example.sequence.issue.model.Job;
 import example.sequence.issue.model.Period;
 import example.sequence.issue.model.Plan;
@@ -32,29 +33,35 @@ public class SampleGenerator {
     public void onApplicationEvent(ApplicationStartedEvent event) throws ExecutionException, InterruptedException {
         log.info("Generating plan...");
 
-        List<Period> periods = IntStream.rangeClosed(1, 4).mapToObj(index -> Period.builder().index(index).name("p" + index).build()).toList();
-        List<Product> products = IntStream.rangeClosed(1, 1).mapToObj(index -> Product.builder().name("product-" + index).build()).toList();
+        List<Period> periods = IntStream.rangeClosed(1, 4).mapToObj(index -> new Period(index, "p" + index)).toList();
+        List<Product> products = IntStream.rangeClosed(1, 1).mapToObj(index -> new Product("product-" + index)).toList();
 
         List<Job> jobs = new ArrayList<>();
         List<Stock> stocks = new ArrayList<>();
         for (Product product : products) {
             long demand = 0;
             for (Period period : periods) {
-                jobs.add(Job.builder().jobId(String.join("-", period.getName(), product.getName()))
-                        .period(period).product(product).build());
+                var job = new Job();
+                job.setJobId(period.name() + "-" + product.name());
+                job.setPeriod(period);
+                job.setProduct(product);
+                jobs.add(job);
                 demand += 10;
-                stocks.add(Stock.builder().stockId(String.join("-", period.getName(), product.getName())).period(period).product(product).quantity(-demand).build());
+
+                var stock = new Stock();
+                stock.setStockId(period.name() + "-" + product.name());
+                stock.setPeriod(period);
+                stock.setProduct(product);
+                stock.setQuantity(-demand);
+                stocks.add(stock);
             }
         }
 
-        Plan plan = Plan.builder()
-                .periods(periods)
-                .products(products)
-                .jobs(jobs)
-                .stocks(stocks)
-                .build();
-
-
+        Plan plan = new Plan();
+        plan.setPeriods(periods);
+        plan.setProducts(products);
+        plan.setJobs(jobs);
+        plan.setStocks(stocks);
         planRepository.write(plan);
 
         plan.getStocks().forEach(job -> log.info("Stock:: {}", job));

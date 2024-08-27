@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 public class PlanConstraintProvider implements ConstraintProvider {
 
-    public static final Comparator<Stock> STOCK_COMPARATOR = Comparator.comparing(Stock::getPeriod, Comparator.comparing(Period::getIndex));
+    public static final Comparator<Stock> STOCK_COMPARATOR = Comparator.comparing(Stock::getPeriod, Comparator.comparing(Period::index));
 
     @Override
     public Constraint[] defineConstraints(ConstraintFactory constraintFactory) {
@@ -41,7 +41,7 @@ public class PlanConstraintProvider implements ConstraintProvider {
                 .forEach(Job.class)
                 .filter(job -> job.getQuantity() <= 0)
                 .groupBy(Job::getProduct,
-                        ConstraintCollectors.toConsecutiveSequences(job -> job.getPeriod().getIndex()))
+                        ConstraintCollectors.toConsecutiveSequences(job -> job.getPeriod().index()))
                 .flattenLast(SequenceChain::getConsecutiveSequences)
 //                .filter((product, sequence) -> sequence.getCount() > 1)
                 .penalize(HardSoftLongScore.ONE_HARD, (product, sequence) -> sequence.getCount() -1)
@@ -53,7 +53,7 @@ public class PlanConstraintProvider implements ConstraintProvider {
                 .forEach(Stock.class)
                 .filter(stock -> stock.getQuantity() < 0)
                 .groupBy(Stock::getProduct,
-                        ConstraintCollectors.toConsecutiveSequences(stock -> stock.getPeriod().getIndex()))
+                        ConstraintCollectors.toConsecutiveSequences(stock -> stock.getPeriod().index()))
                 .flattenLast(SequenceChain::getConsecutiveSequences)
 //                .filter((product, sequence) -> sequence.getCount() > 1)
                 .penalize(HardSoftLongScore.ONE_HARD, (product, sequence) -> sequence.getCount() -1)

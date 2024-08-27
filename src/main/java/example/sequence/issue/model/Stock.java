@@ -12,23 +12,57 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@Builder
-@Data
 @PlanningEntity
-@NoArgsConstructor
-@AllArgsConstructor
 public class Stock {
     @PlanningId
-    @EqualsAndHashCode.Include
     private String stockId;
 
-    @ToString.Exclude
     private Period period;
-    @ToString.Exclude
     private Product product;
+
     @ShadowVariable(
             sourceEntityClass = Job.class,
             sourceVariableName = "quantity",
             variableListenerClass = StockQuantityVariableListener.class)
     private Long quantity;
+
+    public String getStockId() {
+        return stockId;
+    }
+
+    public void setStockId(String stockId) {
+        this.stockId = stockId;
+    }
+
+    public Period getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(Period period) {
+        this.period = period;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Long getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Long quantity) {
+        this.quantity = quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "Stock{" +
+                "stockId='" + stockId + '\'' +
+                ", quantity=" + quantity +
+                '}';
+    }
 }
