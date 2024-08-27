@@ -18,9 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Job {
-
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Product product;
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Period period;
 
@@ -28,6 +29,7 @@ public class Job {
     @EqualsAndHashCode.Include private String jobId;
 
     @PlanningVariable(valueRangeProviderRefs = "quantities")
+    @EqualsAndHashCode.Exclude
     @Builder.Default
     private Long quantity = 0L;
 }
