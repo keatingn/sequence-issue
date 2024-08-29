@@ -23,12 +23,15 @@ public class Stock {
     private String stockId;
 
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Period period;
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Product product;
     @ShadowVariable(
             sourceEntityClass = Job.class,
             sourceVariableName = "quantity",
             variableListenerClass = StockQuantityVariableListener.class)
+    @EqualsAndHashCode.Exclude
     private Long quantity;
 }
